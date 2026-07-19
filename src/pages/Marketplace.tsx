@@ -6,6 +6,7 @@ const Marketplace = () => {
   const [searchTerm, setsearchTerm] = useState("");
   const [selectedCategory, setselectedCategory] = useState("All Categories");
   const [selectedCondition, setselectedCondition] = useState("All Conditions");
+  const [sortBy, setsortBy] = useState("Newest")
 
   const filteredProducts = products.filter((product) => {
 
@@ -25,6 +26,16 @@ const Marketplace = () => {
     return (matchesSearch && matchesCategory && matchesCondition);
 
 });
+
+const sortedProducts = [...filteredProducts];
+
+if(sortBy == "Price Low to High") {
+  sortedProducts.sort((a,b) => a.price - b.price);
+}
+
+if (sortBy === "Price High to Low") {
+  sortedProducts.sort((a, b) => b.price - a.price);
+}
 
   return (
     <div className="page">
@@ -58,7 +69,8 @@ const Marketplace = () => {
           <option>Used</option>
         </select>
 
-        <select className="filter-select">
+        <select className="filter-select" value={sortBy}
+        onChange={(e)=>setsortBy(e.target.value)}>
           <option>Newest</option>
           <option>Price Low to High</option>
           <option>Price High to Low</option>
@@ -74,7 +86,7 @@ const Marketplace = () => {
 
   <div className="product-grid">
   {filteredProducts.length > 0 ? (
-    filteredProducts.map((product) => (
+    sortedProducts.map((product) => (
       <ProductCard
         key={product.id}
         title={product.title}
