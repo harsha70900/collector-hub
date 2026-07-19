@@ -1,12 +1,43 @@
+import ProductCard from "./ProductCard";
+import { products } from "../data/products";
+import { useState } from "react";
+
 const Marketplace = () => {
+  const [searchTerm, setsearchTerm] = useState("");
+  const [selectedCategory, setselectedCategory] = useState("All Categories");
+
+  const filteredProducts = products.filter((product) => {
+
+    const matchesSearch =
+        product.title
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+
+    const matchesCategory =
+        selectedCategory === "All Categories" ||
+        product.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+
+});
+
   return (
     <div className="page">
       <h1 className="page-title">Marketplace</h1>
 
        <div className="marketplace-controls">
-        <input type="text" placeholder="Search collectibles..." className="search-input" />
 
-        <select className="filter-select">
+        <input 
+        type="text" 
+        placeholder="Search collectibles..." 
+        className="search-input" 
+        value={searchTerm}
+        onChange={(e)=>setsearchTerm(e.target.value)}
+        />
+
+        <select className="filter-select" value={selectedCategory} 
+        onChange={(e)=>setselectedCategory(e.target.value)}
+        >
           <option>All Categories</option>
           <option>Trading Cards</option>
           <option>Coins</option>
@@ -30,6 +61,34 @@ const Marketplace = () => {
         </div>
         <div className="product-grid">
        </div>
+
+       <div className="product-grid">
+
+<div className="product-grid">
+
+  <div className="product-grid">
+  {filteredProducts.length > 0 ? (
+    filteredProducts.map((product) => (
+      <ProductCard
+        key={product.id}
+        title={product.title}
+        category={product.category}
+        condition={product.condition}
+        price={product.price}
+        seller={product.seller}
+        location={product.location}
+        image={product.image}
+      />
+    ))
+  ) : (
+    <p>No products found.</p>
+  )}
+</div>
+
+
+</div>
+
+</div>
     </div>
   );
 };
