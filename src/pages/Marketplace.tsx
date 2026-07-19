@@ -5,6 +5,7 @@ import { useState } from "react";
 const Marketplace = () => {
   const [searchTerm, setsearchTerm] = useState("");
   const [selectedCategory, setselectedCategory] = useState("All Categories");
+  const [selectedCondition, setselectedCondition] = useState("All Conditions");
 
   const filteredProducts = products.filter((product) => {
 
@@ -17,7 +18,11 @@ const Marketplace = () => {
         selectedCategory === "All Categories" ||
         product.category === selectedCategory;
 
-    return matchesSearch && matchesCategory;
+    const matchesCondition = 
+        selectedCondition === "All Conditions" ||
+        product.condition === selectedCondition;
+
+    return (matchesSearch && matchesCategory && matchesCondition);
 
 });
 
@@ -45,7 +50,8 @@ const Marketplace = () => {
           <option>Figures</option>
         </select>
 
-        <select className="filter-select">
+        <select className="filter-select" value={selectedCondition} 
+        onChange={(e)=>setselectedCondition(e.target.value)}>
           <option>All Conditions</option>
           <option>Mint</option>
           <option>Good</option>
