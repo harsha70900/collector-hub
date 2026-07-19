@@ -27,6 +27,8 @@ function App() {
         <Route path="/post/:id" element={<PostDetails />} />
       </Routes>
     </BrowserRouter>
+
+    
   );
 }
 

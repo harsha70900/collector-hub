@@ -1,62 +1,67 @@
+import { useNavigate } from "react-router-dom";
+import type { Product } from "../types/Product";
 
-type ProductardProps = {
-    title: string;
-    category: string;
-    condition : string;
-    price: number;
-  seller: string;
-  location: string;
-  image: string;
-
+type ProductCardProps = {
+  product: Product;
+  onAddToWishlist?: (product: Product) => void;
 };
 
 const ProductCard = ({
-  title,
-  category,
-  condition,
-  price,
-  seller,
-  location,
-  image,
-} : ProductardProps) => {
-    return (
-        <div className="product-card">
+  product,
+  onAddToWishlist,
+}: ProductCardProps) => {
 
-            <img src={image} 
-            alt={title} 
-            className="producr-image" />
+  const navigate = useNavigate();
 
-            <h3>{title}</h3>
+  return (
+    <div className="product-card">
 
-            <p>
-                <strong>Category:</strong> {category}
-            </p>
+      <img
+        src={product.image}
+        alt={product.title}
+        className="product-image"
+      />
 
-            <p>
-        <strong>Condition:</strong> {condition}
-            </p>
+      <h3>{product.title}</h3>
 
-             <p>
-        <strong>Seller:</strong> {seller}
+      <p>
+        <strong>Category:</strong> {product.category}
       </p>
 
       <p>
-        <strong>Location:</strong> {location}
+        <strong>Condition:</strong> {product.condition}
       </p>
 
-       <h2>₹{price}</h2>
+      <p>
+        <strong>Seller:</strong> {product.seller}
+      </p>
 
-       <div className="card-buttons">
+      <p>
+        <strong>Location:</strong> {product.location}
+      </p>
 
-        <button>View</button>
+      <h2>₹{product.price}</h2>
 
-        <button>Add Collection</button>
+      <div className="card-buttons">
 
-        <button>Wishlist</button>
+        <button
+          onClick={() => navigate(`/product/${product.id}`)}
+        >
+          👁 View
+        </button>
 
-        </div>
-        </div>
-    );
+        {onAddToWishlist && (
+          <button
+            onClick={() => onAddToWishlist(product)}
+          >
+            ❤️ Wishlist
+          </button>
+        )}
+
+      </div>
+
+    </div>
+  );
 };
 
 export default ProductCard;
